@@ -1,0 +1,21 @@
+# Docker start command
+sudo docker run -it \
+  --net=host \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+  -v $HOME/.Xauthority:/root/.Xauthority:rw \
+  --name robogrammar_container \
+  robogrammar:new /bin/bash
+
+
+# Docker update command
+sudo docker buildx build ./ -t robogrammar:new
+
+# Docker Stop
+sudo docker stop robogrammar
+
+# List out containers
+sudo docker ps -a
+
+# Delete containers
+sudo docker rm [name]
