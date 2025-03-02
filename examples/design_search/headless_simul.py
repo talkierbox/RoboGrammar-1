@@ -132,7 +132,7 @@ def main():
     print("Final position:", end_pos)
     print("Distance travelled:", distance_travelled)
     if args.optim:
-        print("Optimization Result, Average Reward:", result)
+        print("Average Reward (Optimization Result):", result)
 
     # Optionally, save simulation snapshots as .obj files.
     if args.save_obj_dir and input_sequence is not None:
