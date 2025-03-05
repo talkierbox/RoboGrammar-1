@@ -9,14 +9,15 @@ ENV PYTHONIOENCODING=utf-8
 ENV PYTHONPATH="/robot_design/examples/design_search:/robot_design/examples/graph_learning:/robot_design/build/examples/python_bindings:$PYTHONPATH"
 
 # Install third party Python packages
-run pip3 install numpy==1.19.5
-run pip3 install numpy-quaternion==2020.11.2.17.0.49
+RUN pip3 install numpy==1.19.5
+RUN pip3 install numpy-quaternion==2020.11.2.17.0.49
 RUN pip3 install scipy
 RUN pip3 install torch
 RUN pip3 install pillow
 RUN pip3 install matplotlib
 RUN pip3 install pandas
 RUN pip3 install seaborn
+RUN pip3 install flask
 
 # Copy our code and build
 WORKDIR /robot_design
