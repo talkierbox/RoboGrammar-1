@@ -53,6 +53,10 @@ def finalize_robot(robot):
             link.joint_type = rd.JointType.FIXED
             link.joint_color = [1.0, 0.0, 1.0]
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    return "Pong"
+
 @app.route('/simulate', methods=['POST'])
 def simulate_robot():
     try:
