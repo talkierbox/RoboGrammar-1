@@ -15,5 +15,8 @@ try:
     response = requests.post(url, json=payload)
     print("Status Code:", response.status_code)
     print("Response:", response.text)
+    data = response.json()  # Convert the JSON response into a Python dict
+    optimization_result = data["optimization_result"]  # Extract the optimization_result value
+    print("Optimization Result:", optimization_result)
 except Exception as e:
     print("Oops! Something went wrong:", e)
