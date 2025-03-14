@@ -14,6 +14,8 @@ docker run -it ^
   --name robogrammar_container ^
   robogrammar:new /bin/bash
 
+# RUN API
+python3 examples/design_search/api.py
 
 # xhost
 sudo xhost -local:docker

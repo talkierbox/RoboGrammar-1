@@ -53,6 +53,8 @@ def finalize_robot(robot):
             link.joint_type = rd.JointType.FIXED
             link.joint_color = [1.0, 0.0, 1.0]
 
+cache = {}
+
 @app.route('/ping', methods=['GET'])
 def ping():
     return "Pong"
@@ -88,6 +90,11 @@ def simulate_robot():
             # Try to split a comma-separated string.
             rule_sequence = [int(x.strip(",")) for x in rule_sequence.split()]
 
+        # Caching
+        cache_key = (tuple(rule_sequence), task_name, grammar_file, optim, episode_len, episodes)
+        if cache_key in cache:
+            return jsonify(cache[cache_key])
+        
         # Instantiate the task from the tasks module.
         task_class = getattr(tasks, task_name)
         task = task_class(episode_len=episode_len)
@@ -189,6 +196,7 @@ def simulate_robot():
             "collision_warning": collision_warning,
             "obj_save_message": obj_save_message
         }
+        cache[cache_key] = response
         return jsonify(response)
     except Exception as e:
         # If something goes wrong, return the error message.
