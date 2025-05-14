@@ -4,7 +4,7 @@ url = "http://127.0.0.1:5555/simulate"
 payload = {
     "task": "RidgedTerrainTask",
     "grammar_file": "data/designs/grammar_apr30.dot",
-    "rule_sequence": [0, 7, 1, 13, 1, 2, 16, 12, 13, 6, 4, 19, 4, 17, 5, 3, 2, 16, 4, 5, 18, 9, 8, 9, 9, 8],
+    "rule_sequence": [0],
     "jobs": 8,
     "optim": True,
     "episodes": 1, # using multiple episodes causes FCValueEstimator to crash apparently

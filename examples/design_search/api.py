@@ -90,6 +90,7 @@ def simulate_robot():
             # Try to split a comma-separated string.
             rule_sequence = [int(x.strip(",")) for x in rule_sequence.split()]
 
+        print(rule_sequence) # Print the rule sequence for debugging.
         # Caching
         cache_key = (tuple(rule_sequence), task_name, grammar_file, optim, episode_len, episodes)
         if cache_key in cache:
@@ -167,6 +168,7 @@ def simulate_robot():
         main_sim.get_robot_world_aabb(robot_idx, end_lower, end_upper)
         end_pos = 0.5 * (end_lower + end_upper)
         distance_travelled = float(np.linalg.norm(end_pos - start_pos))
+        print("Distance travelled: ", distance_travelled)
 
         # Optionally, save simulation snapshots as .obj files.
         obj_save_message = None
@@ -200,7 +202,14 @@ def simulate_robot():
         return jsonify(response)
     except Exception as e:
         # If something goes wrong, return the error message.
-        return jsonify({"error": str(e)}), 500
+        response = {
+            "error": str(e),
+            "distance_travelled": 0,
+            "optimization_result": 0,
+        }
+        print("ERROR!")
+        print(e)
+        return jsonify(response), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555) # Port 5555
