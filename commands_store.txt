@@ -1,33 +1,99 @@
-# Docker start command
-sudo docker run -it \
+# ===========================================
+# RoboGrammar Docker Commands
+# ===========================================
+
+# BUILD IMAGE
+docker buildx build ./ -t robogrammar:latest
+
+# START API SERVER (Linux/Mac - with GUI support)
+docker run -d \
+  --name robogrammar_api \
+  -p 5555:5555 \
   --net=host \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   -v $HOME/.Xauthority:/root/.Xauthority:rw \
-  --name robogrammar_container \
-  robogrammar:new /bin/bash
+  robogrammar:latest
 
-# start for windows
-docker run -it ^
-  -e DISPLAY=host.docker.internal:0.0 ^
+# START API SERVER (Windows - API only)
+docker run -d ^
+  --name robogrammar_api ^
   -p 5555:5555 ^
-  --name robogrammar_container ^
-  robogrammar:new /bin/bash
+  robogrammar:latest
 
-# RUN API
-python3 examples/design_search/api.py
+# START API SERVER (Cross-platform - API only)
+docker run -d --name robogrammar_api -p 5555:5555 robogrammar:latest
 
-# xhost
-sudo xhost -local:docker
+# INTERACTIVE BASH SESSION (for development)
+docker run -it \
+  --name robogrammar_dev \
+  -p 5555:5555 \
+  --net=host \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+  -v $HOME/.Xauthority:/root/.Xauthority:rw \
+  robogrammar:latest /bin/bash
 
-# Docker update command
-sudo docker buildx build ./ -t robogrammar:new
+# ===========================================
+# Container Management
+# ===========================================
 
-# Docker Stop
-sudo docker stop robogrammar
+# Check if API is running
+curl http://localhost:5555/ping
 
-# List out containers
-sudo docker ps -a
+# View API logs
+docker logs robogrammar_api
 
-# Delete containers
-sudo docker rm [name]
+# Stop API server
+docker stop robogrammar_api
+
+# Remove container
+docker rm robogrammar_api
+
+# List containers
+docker ps -a
+
+# Remove all stopped containers
+docker container prune
+
+# ===========================================
+# X11 Setup (Linux only - for GUI support)
+# ===========================================
+
+# Allow Docker to access X11 display
+xhost +local:docker
+
+# Revoke access when done
+xhost -local:docker
+
+# ===========================================
+# Quick Start Commands
+# ===========================================
+
+# 1. Build and start API (one command)
+docker buildx build ./ -t robogrammar:latest && docker run -d --name robogrammar_api -p 5555:5555 robogrammar:latest
+
+# 2. Test API is working
+sleep 5 && curl http://localhost:5555/ping
+
+# 3. Stop and clean up
+docker stop robogrammar_api && docker rm robogrammar_api
+
+# ===========================================
+# Docker Compose (Recommended - Easier!)
+# ===========================================
+
+# Start API server (builds automatically if needed)
+docker-compose up -d
+
+# View API logs
+docker-compose logs -f
+
+# Stop API server
+docker-compose down
+
+# Rebuild and restart
+docker-compose up -d --build
+
+# Check API status
+curl http://localhost:5555/ping

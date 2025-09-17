@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  robogrammar-api:
+    build: .
+    container_name: robogrammar_api
+    ports:
+      - "5555:5555"
+    environment:
+      - ROBOT_DESIGN_DATA_DIR=/robot_design/data/
+    restart: unless-stopped
+    volumes:
+      # Optional: Mount logs directory for persistent logging
+      - ./logs:/robot_design/logs:rw
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
